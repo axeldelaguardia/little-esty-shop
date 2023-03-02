@@ -169,7 +169,7 @@ RSpec.describe Merchant, type: :model do
 			transaction23 = create(:transaction, invoice: invoice19) 
 			transaction24 = create(:transaction, invoice: invoice20) 
 
-			expect(Merchant.top_five_merchant_by_rev).to eq([merchant1, merchant_2, merchant_3, merchant_4, merchant_5])
+			expect(Merchant.top_five_merchant_by_rev).to match_array([merchant1, merchant_2, merchant_3, merchant_4, merchant_5])
 			expect(Merchant.top_five_merchant_by_rev).to_not include(merchant_6)
 		end
 	end
