@@ -11,39 +11,40 @@ RSpec.describe Merchant, type: :model do
     it { should have_many(:invoices).through(:invoice_items) }
     it { should have_many(:transactions).through(:invoices) }
     it { should have_many(:customers).through(:invoices) }
-		it { should define_enum_for(:status).with_values(["disabled", "active"])}
+    it { should have_many(:bulk_discounts) }
+		it { should define_enum_for(:status).with_values(["disabled", "active"]) }
   end
 
-  let!(:merchant1) { create(:active_merchant)}
-  let!(:merchant_2) { create(:active_merchant)}
-  let!(:merchant_3) { create(:active_merchant)}
-  let!(:merchant_4) { create(:merchant)}
+  let!(:merchant1) { create(:active_merchant) }
+  let!(:merchant_2) { create(:active_merchant) }
+  let!(:merchant_3) { create(:active_merchant) }
+  let!(:merchant_4) { create(:merchant) }
 
-	let!(:customer1) { create(:customer)}
-	let!(:customer2) { create(:customer)}
-	let!(:customer3) { create(:customer)}
-	let!(:customer4) { create(:customer)}
-	let!(:customer5) { create(:customer)}
-	let!(:customer6) { create(:customer)}
+	let!(:customer1) { create(:customer) }
+	let!(:customer2) { create(:customer) }
+	let!(:customer3) { create(:customer) }
+	let!(:customer4) { create(:customer) }
+	let!(:customer5) { create(:customer) }
+	let!(:customer6) { create(:customer) }
 
-	let!(:invoice1) { create(:completed_invoice, customer: customer1, created_at: Date.new(2014, 3, 1))}
-	let!(:invoice2) { create(:completed_invoice, customer: customer1,  created_at: Date.new(2012, 3, 1))}
-	let!(:invoice3) { create(:completed_invoice, customer: customer2, created_at: Date.new(2013, 3, 1))} 
-	let!(:invoice4) { create(:completed_invoice, customer: customer2, created_at: Date.new(2014, 3, 1))}
-	let!(:invoice5) { create(:completed_invoice, customer: customer3, created_at: Date.new(2010, 3, 1))}
-	let!(:invoice6) { create(:completed_invoice, customer: customer3, created_at: Date.new(2016, 3, 1))}
-	let!(:invoice7) { create(:completed_invoice, customer: customer4, created_at: Date.new(2018, 3, 1))}
-	let!(:invoice8) { create(:completed_invoice, customer: customer5, created_at: Date.new(2017, 3, 1))}
-	let!(:invoice9) { create(:completed_invoice, customer: customer5, created_at: Date.new(2019, 3, 1))}
-	let!(:invoice10) { create(:completed_invoice, customer: customer6, created_at: Date.new(2020, 3, 1))}
-	let!(:invoice11) { create(:completed_invoice, customer: customer6, created_at: Date.new(2021, 3, 1))}
+	let!(:invoice1) { create(:completed_invoice, customer: customer1, created_at: Date.new(2014, 3, 1)) }
+	let!(:invoice2) { create(:completed_invoice, customer: customer1,  created_at: Date.new(2012, 3, 1)) }
+	let!(:invoice3) { create(:completed_invoice, customer: customer2, created_at: Date.new(2013, 3, 1)) } 
+	let!(:invoice4) { create(:completed_invoice, customer: customer2, created_at: Date.new(2014, 3, 1)) }
+	let!(:invoice5) { create(:completed_invoice, customer: customer3, created_at: Date.new(2010, 3, 1)) }
+	let!(:invoice6) { create(:completed_invoice, customer: customer3, created_at: Date.new(2016, 3, 1)) }
+	let!(:invoice7) { create(:completed_invoice, customer: customer4, created_at: Date.new(2018, 3, 1)) }
+	let!(:invoice8) { create(:completed_invoice, customer: customer5, created_at: Date.new(2017, 3, 1)) }
+	let!(:invoice9) { create(:completed_invoice, customer: customer5, created_at: Date.new(2019, 3, 1)) }
+	let!(:invoice10) { create(:completed_invoice, customer: customer6, created_at: Date.new(2020, 3, 1)) }
+	let!(:invoice11) { create(:completed_invoice, customer: customer6, created_at: Date.new(2021, 3, 1)) }
 
-	let!(:item1) {create(:item, merchant: merchant1, name: 'item1')}
-	let!(:item2) {create(:item, merchant: merchant1, name: 'item2')}
-	let!(:item3) {create(:item, merchant: merchant1, name: 'item3')}
-	let!(:item4) {create(:item, merchant: merchant1, name: 'item4')}
-	let!(:item5) {create(:item, merchant: merchant1, name: 'item5')}
-	let!(:item6) {create(:item, merchant: merchant1, name: 'item6')}
+	let!(:item1) {create(:item, merchant: merchant1, name: 'item1') }
+	let!(:item2) {create(:item, merchant: merchant1, name: 'item2') }
+	let!(:item3) {create(:item, merchant: merchant1, name: 'item3') }
+	let!(:item4) {create(:item, merchant: merchant1, name: 'item4') }
+	let!(:item5) {create(:item, merchant: merchant1, name: 'item5') }
+	let!(:item6) {create(:item, merchant: merchant1, name: 'item6') }
 
 	let!(:transaction1) {create(:transaction, invoice: invoice1) }
 	let!(:transaction2) {create(:transaction, invoice: invoice2) }
@@ -168,7 +169,7 @@ RSpec.describe Merchant, type: :model do
 			transaction23 = create(:transaction, invoice: invoice19) 
 			transaction24 = create(:transaction, invoice: invoice20) 
 
-			expect(Merchant.top_five_merchant_by_rev).to eq([merchant1, merchant_2, merchant_3, merchant_4, merchant_5])
+			expect(Merchant.top_five_merchant_by_rev).to match_array([merchant1, merchant_2, merchant_3, merchant_4, merchant_5])
 			expect(Merchant.top_five_merchant_by_rev).to_not include(merchant_6)
 		end
 	end

@@ -2,46 +2,46 @@ require 'rails_helper'
 
 RSpec.describe 'merchant show dashboard page', type: :feature do
   describe "as a merchant visiting '/merchants/merchant_id/dashboard'" do
-    let!(:merchant1) { create(:merchant)}
+    let!(:merchant1) { create(:merchant) }
 
-    let!(:customer1) { create(:customer)}
-    let!(:customer2) { create(:customer)}
-    let!(:customer3) { create(:customer)}
-    let!(:customer4) { create(:customer)}
-    let!(:customer5) { create(:customer)}
-    let!(:customer6) { create(:customer)}
+    let!(:customer1) { create(:customer) }
+    let!(:customer2) { create(:customer) }
+    let!(:customer3) { create(:customer) }
+    let!(:customer4) { create(:customer) }
+    let!(:customer5) { create(:customer) }
+    let!(:customer6) { create(:customer) }
   
 
-    let!(:invoice1) { create(:completed_invoice, customer: customer1, created_at: Date.new(2014, 3, 1))}
-    let!(:invoice2) { create(:completed_invoice, customer: customer1,  created_at: Date.new(2012, 3, 1))}
-    let!(:invoice3) { create(:completed_invoice, customer: customer2)} 
-    let!(:invoice4) { create(:completed_invoice, customer: customer2)}
-    let!(:invoice5) { create(:completed_invoice, customer: customer3)}
-    let!(:invoice6) { create(:completed_invoice, customer: customer3)}
-    let!(:invoice7) { create(:completed_invoice, customer: customer4)}
-    let!(:invoice8) { create(:completed_invoice, customer: customer5)}
-    let!(:invoice9) { create(:completed_invoice, customer: customer5)}
-    let!(:invoice10) { create(:completed_invoice, customer: customer6)}
-    let!(:invoice11) { create(:completed_invoice, customer: customer6)}
+    let!(:invoice1) { create(:completed_invoice, customer: customer1, created_at: Date.new(2014, 3, 1)) }
+    let!(:invoice2) { create(:completed_invoice, customer: customer1,  created_at: Date.new(2012, 3, 1)) }
+    let!(:invoice3) { create(:completed_invoice, customer: customer2) } 
+    let!(:invoice4) { create(:completed_invoice, customer: customer2) }
+    let!(:invoice5) { create(:completed_invoice, customer: customer3) }
+    let!(:invoice6) { create(:completed_invoice, customer: customer3) }
+    let!(:invoice7) { create(:completed_invoice, customer: customer4) }
+    let!(:invoice8) { create(:completed_invoice, customer: customer5) }
+    let!(:invoice9) { create(:completed_invoice, customer: customer5) }
+    let!(:invoice10) { create(:completed_invoice, customer: customer6) }
+    let!(:invoice11) { create(:completed_invoice, customer: customer6) }
 
-    let!(:item1) {create(:item, merchant: merchant1)}  
-    let!(:item2) {create(:item, merchant: merchant1)}
-    let!(:item3) {create(:item, merchant: merchant1)}
-    let!(:item4) {create(:item, merchant: merchant1)}
-    let!(:item5) {create(:item, merchant: merchant1)}
+    let!(:item1) { create(:item, merchant: merchant1) }
+    let!(:item2) { create(:item, merchant: merchant1) }
+    let!(:item3) { create(:item, merchant: merchant1) }
+    let!(:item4) { create(:item, merchant: merchant1) }
+    let!(:item5) { create(:item, merchant: merchant1) }
    
-    let!(:transaction1) {create(:transaction, invoice: invoice1) }
-    let!(:transaction2) {create(:transaction, invoice: invoice2) }
-    let!(:transaction3) {create(:transaction, invoice: invoice3) }
-    let!(:transaction4) {create(:transaction, invoice: invoice4) }
-    let!(:transaction5) {create(:transaction, invoice: invoice5) }
-    let!(:transaction6) {create(:transaction, invoice: invoice6) }
-    let!(:transaction8) {create(:transaction, invoice: invoice7) }
-    let!(:transaction9) {create(:transaction, invoice: invoice8) }
-    let!(:transaction10) {create(:transaction, invoice: invoice9) }
-    let!(:transaction11) {create(:transaction, invoice: invoice10) }
-    let!(:transaction12) {create(:transaction, invoice: invoice10) }
-    let!(:transaction13) {create(:transaction, invoice: invoice11) }
+    let!(:transaction1) { create(:transaction, invoice: invoice1) }
+    let!(:transaction2) { create(:transaction, invoice: invoice2) }
+    let!(:transaction3) { create(:transaction, invoice: invoice3) }
+    let!(:transaction4) { create(:transaction, invoice: invoice4) }
+    let!(:transaction5) { create(:transaction, invoice: invoice5) }
+    let!(:transaction6) { create(:transaction, invoice: invoice6) }
+    let!(:transaction8) { create(:transaction, invoice: invoice7) }
+    let!(:transaction9) { create(:transaction, invoice: invoice8) }
+    let!(:transaction10) { create(:transaction, invoice: invoice9) }
+    let!(:transaction11) { create(:transaction, invoice: invoice10) }
+    let!(:transaction12) { create(:transaction, invoice: invoice10) }
+    let!(:transaction13) { create(:transaction, invoice: invoice11) }
     
     before do
       create(:invoice_item, item: item1, invoice: invoice1)
@@ -161,5 +161,23 @@ RSpec.describe 'merchant show dashboard page', type: :feature do
       expect(page).to have_content(invoice5.created_at.strftime"%A, %B %d, %Y")
       expect(page).to have_content(invoice6.created_at.strftime"%A, %B %d, %Y")
     end
+
+		describe 'bulk discounts index' do
+			let(:twenty_p_ten_i) { merchant1.create(:bulk_discount, merchant: merchant1) }
+
+			it 'has a link to view all discounts' do
+				visit merchant_path(merchant1)
+
+				expect(page).to have_link('View All Discounts', href: merchant_bulk_discounts_path(merchant1))
+			end
+
+			it 'link takes us to the merchant bulk discounts index page' do
+				visit merchant_path(merchant1)
+
+				click_link('View All Discount')
+
+				expect(page).to have_current_path(merchant_bulk_discounts_path(merchant1))
+			end
+		end
   end
 end
