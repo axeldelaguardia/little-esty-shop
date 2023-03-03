@@ -1,17 +1,17 @@
 FactoryBot.define do
   factory :bulk_discount do
-    percentage { 0.2 }
+    percentage { 20.0 }
     quantity_threshold { 10 }
 		association :merchant
 
 
 		trait :thirty_percent do
-			percentage { 0.3 }
+			percentage { 30.0 }
 			quantity_threshold { 15 }
 		end
 
 		trait :five_percent do
-			percentage { 0.05 }
+			percentage {5.0 }
 			quantity_threshold { 35 }
 		end
 
