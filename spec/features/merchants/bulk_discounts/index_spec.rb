@@ -13,25 +13,33 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
 			it 'lists all bulk discounts belonging to merchant' do
 				visit merchant_bulk_discounts_path(merchant_1)
 				
-				within "##{discount_1.id}" do
-					expect(page).to have_content("Bulk Discount #1")
-					expect(page).to have_content("Percentage: #{(discount_1.percentage * 100)}%")
-					expect(page).to have_content("Quantity Threshold: #{discount_1.quantity_threshold}")
-				end
+				within "#discounts" do
+					within "##{discount_1.id}" do
+						expect(page).to have_content("Bulk Discount ##{discount_1.id}")
+						expect(page).to have_content("Percentage: #{(discount_1.percentage * 100)}%")
+						expect(page).to have_content("Quantity Threshold: #{discount_1.quantity_threshold}")
+					end
 
-				expect(page).to_not have_content(discount_3.percentage)
-				expect(page).to_not have_content(discount_3.quantity_threshold)
+					within "##{discount_2.id}" do
+						expect(page).to have_content("Bulk Discount ##{discount_2.id}")
+						expect(page).to have_content("Percentage: #{(discount_2.percentage * 100)}%")
+						expect(page).to have_content("Quantity Threshold: #{discount_2.quantity_threshold}")
+					end
+
+					expect(page).to_not have_content(discount_3.percentage)
+					expect(page).to_not have_content(discount_3.quantity_threshold)
+				end
 			end
 
 			it 'has a link to each bulk discounts show page' do
 				visit merchant_bulk_discounts_path(merchant_1)
 				
 				within "##{discount_1.id}" do
-					expect(page).to have_link("Bulk Discount #1", href:  merchant_bulk_discount_path(merchant_1, discount_1))
+					expect(page).to have_link("Bulk Discount ##{discount_1.id}", href:  merchant_bulk_discount_path(merchant_1, discount_1))
 				end
 
 				within "##{discount_2.id}" do
-					expect(page).to have_link("Bulk Discount #2", href:  merchant_bulk_discount_path(merchant_1, discount_2))
+					expect(page).to have_link("Bulk Discount ##{discount_2.id}", href:  merchant_bulk_discount_path(merchant_1, discount_2))
 				end
 			end
 		end
@@ -49,6 +57,30 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
 				click_link "Create Bulk Discount"
 
 				expect(page).to have_current_path(new_merchant_bulk_discount_path(merchant_1))
+			end
+		end
+
+		describe 'delete bulk discount' do
+			it 'has a link to delete next to each bulk discount' do
+				visit merchant_bulk_discounts_path(merchant_1)
+
+				within "##{discount_1.id}" do
+					expect(page).to have_link("Delete", href: merchant_bulk_discount_path(merchant_1, discount_1))
+				end
+
+				within "##{discount_2.id}" do
+					expect(page).to have_link("Delete", href: merchant_bulk_discount_path(merchant_1, discount_2))
+				end
+			end
+
+			it 'clicking the delete link will remove the bulk discount from the page' do
+				visit merchant_bulk_discounts_path(merchant_1)
+				
+				within "##{discount_1.id}" do
+					click_link 'Delete'
+				end
+
+				expect(page).to_not have_content("Bulk Discount ##{discount_1.id}")
 			end
 		end
   end
