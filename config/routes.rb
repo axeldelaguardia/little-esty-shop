@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 		resources :bulk_discounts, except: :update, controller: 'merchant/bulk_discounts'
 	end
 
+	patch '/merchants/:merchant_id/bulk_discounts/:id', to: "merchant/bulk_discounts#update"
+
 
   patch '/merchants/:merchant_id/invoices/:id', to: 'merchant/invoice_items#update'
 

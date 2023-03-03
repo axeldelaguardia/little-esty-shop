@@ -22,11 +22,14 @@ class  Merchant::BulkDiscountsController < ApplicationController
 	end
 
 	def edit
-		require 'pry'; binding.pry
+		@discount = BulkDiscount.find(params[:id])
 	end
 
 	def update
-		require 'pry'; binding.pry
+		@discount = BulkDiscount.find(params[:id])
+		merchant = @discount.merchant
+		@discount.update(bulk_discount_params)
+		redirect_to merchant_bulk_discount_path(merchant, @discount)
 	end
 
 	def destroy
