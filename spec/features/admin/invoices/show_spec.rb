@@ -27,7 +27,7 @@ describe 'As a merchant', type: :feature do
       visit "/admin/invoices/#{invoice1.id}"
 
       expect(page).to have_content("Invoice ##{invoice1.id}")
-      expect(page).to_not have_content(invoice2.id)
+      expect(page).to_not have_content("Invoice ##{invoice2.id}")
       expect(page).to have_select('Status', :selected=> "#{invoice1.status}")
       expect(page).to have_content("Created on: #{invoice1.created_at.strftime("%A, %B %d, %Y")}")
     end
