@@ -15,12 +15,13 @@ describe 'As a merchant', type: :feature do
   let!(:invoice1) {create(:invoice, created_at: Date.new(2020, 1, 2), customer: customer1)}
   let!(:invoice2) {create(:invoice, created_at: Date.new(2019, 3, 9), customer: customer2)}
 
-  let!(:invoice_item1) { create(:invoice_item, invoice: invoice1, item: item1) }
-  let!(:invoice_item2) { create(:invoice_item, invoice: invoice2, item: item2) }
-  let!(:invoice_item3) { create(:invoice_item, invoice: invoice1, item: item3) }
-  let!(:invoice_item4) { create(:invoice_item, invoice: invoice1, item: item4) }
-  let!(:invoice_item5) { create(:invoice_item, invoice: invoice1, item: item5) }
+  let!(:invoice_item1) { create(:invoice_item, invoice: invoice1, item: item1, quantity: 1, unit_price: 5) }
+  let!(:invoice_item2) { create(:invoice_item, invoice: invoice2, item: item2, quantity: 1, unit_price: 5) }
+  let!(:invoice_item3) { create(:invoice_item, invoice: invoice1, item: item3, quantity: 1, unit_price: 5) }
+  let!(:invoice_item4) { create(:invoice_item, invoice: invoice1, item: item4, quantity: 10, unit_price: 5) }
+  let!(:invoice_item5) { create(:invoice_item, invoice: invoice1, item: item5, quantity: 1, unit_price: 5) }
 
+  let!(:discount_1) {create(:bulk_discount, merchant: merchant1) }
   
   describe "When I visit an admin invoice show page" do
     it 'I see the invoice ID, status, and created_at date with formatting' do
@@ -46,28 +47,28 @@ describe 'As a merchant', type: :feature do
 
       expect(page).to_not have_content(item2.name)
 
-      within "##{item1.name}" do
+      within "##{invoice_item1.id}" do
         expect(page).to have_content(item1.name)
         expect(page).to have_content(invoice_item1.quantity)
         expect(page).to have_content("$#{invoice_item1.unit_price.to_f/100}")
         expect(page).to have_content(invoice_item1.status)
       end
 
-      within "##{item3.name}" do
+      within "##{invoice_item3.id}" do
         expect(page).to have_content(item3.name)
         expect(page).to have_content(invoice_item3.quantity)
         expect(page).to have_content("$#{invoice_item3.unit_price.to_f/100}")
         expect(page).to have_content(invoice_item3.status)
       end
 
-      within "##{item4.name}" do
+      within "##{invoice_item4.id}" do
         expect(page).to have_content(item4.name)
         expect(page).to have_content(invoice_item4.quantity)
         expect(page).to have_content("$#{invoice_item4.unit_price.to_f/100}")
         expect(page).to have_content(invoice_item4.status)
       end
 
-      within "##{item5.name}" do
+      within "##{invoice_item5.id}" do
         expect(page).to have_content(item5.name)
         expect(page).to have_content(invoice_item5.quantity)
         expect(page).to have_content("$#{invoice_item5.unit_price.to_f/100}")
@@ -109,5 +110,17 @@ describe 'As a merchant', type: :feature do
 
       expect(page).to have_select('Status', :selected=> "cancelled")
     end
+
+		it 'total revenue with discounts should be displayed' do
+      visit "/admin/invoices/#{invoice1.id}"
+
+			within "##{invoice_item1.id}" do
+				expect(page).to_not have_link("Bulk Discount Applied", href: merchant_bulk_discount_path(merchant1, discount_1))
+			end
+
+			within "##{invoice_item4.id}" do
+				expect(page).to have_link("Bulk Discount Applied", href: merchant_bulk_discount_path(merchant1, discount_1))
+			end
+		end
   end
 end

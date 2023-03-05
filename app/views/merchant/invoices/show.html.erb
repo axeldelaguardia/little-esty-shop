@@ -4,6 +4,7 @@
 <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></p>
 <div id="total_revenue">
   <p>Total Revenue: <%=number_to_currency(@invoice.total_revenue.to_f/100, percision: 2) %></p>
+  <p>Total Revenue with Discounts: <%=number_to_currency(@invoice.total_revenue.to_f/100 - @invoice.total_discounts.to_f/100, percision: 2) %></p>
 </div>
 
 <div id="customers">
@@ -21,19 +22,23 @@
   </tr>
   <tr>
     <%@invoice.invoice_items.each do |invoice_item|%>
-    <td><%=invoice_item.item.name%></td>
-    <td><%=invoice_item.quantity%></td>
-    <td><%=(number_to_currency(invoice_item.unit_price.to_f/100))%></td>
-    
+		<div id=<%=invoice_item.id%>>
+			<td><%=invoice_item.item.name%></td>
+			<td><%=invoice_item.quantity%></td>
+			<td><%=(number_to_currency(invoice_item.unit_price.to_f/100))%></td>
       <td>
         <%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}", method: :patch, local: true do |form|%>
-        <div id=<%=invoice_item.id%>>
-          <%= form.select :status, ['pending', 'packaged', 'shipped'], selected:invoice_item.status %>
-          <%= form.hidden_field :invoice_item_id, value: invoice_item.id%>
-          <%= form.submit "Update Item Status" %>
-          </div>
+					<%= form.select :status, ['pending', 'packaged', 'shipped'], selected:invoice_item.status %>
+					<%= form.hidden_field :invoice_item_id, value: invoice_item.id%>
+					<%= form.submit "Update Item Status" %>
         <%end%>
       </td>
-    </tr>
-    <%end%>
+			<td>
+				<% if invoice_item.bulk_discount_applies? %>
+					<%= link_to 'Bulk Discount Applied', merchant_bulk_discount_path(@merchant, invoice_item.bulk_discounts.take) %>
+				<% end %>
+			</td>
+		</div>
+ 		</tr>
+    <% end %>
 </table>

@@ -22,12 +22,17 @@
     <th>Status</th>
   </tr>
   <% @invoice.invoice_items.each do |invoice_item| %>
-    <div id=<%= invoice_item.item.name %>>
+    <div id=<%= invoice_item.id %>>
       <tr>
         <td><%= invoice_item.item.name %></td>
         <td><%= invoice_item.quantity %></td>
         <td><%= number_to_currency(invoice_item.unit_price.to_f/100, precision:2) %></td>
         <td>Status: <%= invoice_item.status %></td>
+				<td>
+					<% if invoice_item.bulk_discount_applies? %>
+						<%= link_to 'Bulk Discount Applied', merchant_bulk_discount_path(invoice_item.merchant, invoice_item.bulk_discounts.take) %>
+					<% end %>
+				</td>
       </tr>
     </div>  
   <% end %>
