@@ -11,7 +11,7 @@ FactoryBot.define do
 		end
 
 		trait :five_percent do
-			percentage { 0.05 }
+			percentage {0.05 }
 			quantity_threshold { 35 }
 		end
 

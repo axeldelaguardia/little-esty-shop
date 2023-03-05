@@ -3,10 +3,12 @@ class  Merchant::BulkDiscountsController < ApplicationController
   def index
 		@merchant = Merchant.find(params[:merchant_id])
 		@discounts = @merchant.bulk_discounts
+		@upcoming_holidays =  HolidaySearch.new.upcoming_holidays
   end
 
 	def show
 		@discount = BulkDiscount.find(params[:id])
+		@merchant = @discount.merchant
 	end
 
 	def new
@@ -18,6 +20,17 @@ class  Merchant::BulkDiscountsController < ApplicationController
 		merchant = Merchant.find(params[:merchant_id])
 		merchant.bulk_discounts.create(bulk_discount_params)
 		redirect_to merchant_bulk_discounts_path
+	end
+
+	def edit
+		@discount = BulkDiscount.find(params[:id])
+	end
+
+	def update
+		@discount = BulkDiscount.find(params[:id])
+		merchant = @discount.merchant
+		@discount.update(bulk_discount_params)
+		redirect_to merchant_bulk_discount_path(merchant, @discount)
 	end
 
 	def destroy

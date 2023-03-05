@@ -31,7 +31,7 @@ RSpec.describe 'merchant bulk discount new page', type: :feature do
 				fill_in 'Quantity Threshold', with: '100'
 				click_button
 
-				expect(page).to have_content('Bulk Discount #3')
+				expect(page).to have_content("Bulk Discount ##{discount_2.id}")
 				expect(page).to have_content('Percentage: 50')
 				expect(page).to have_content('Quantity Threshold: 100')
 			end
