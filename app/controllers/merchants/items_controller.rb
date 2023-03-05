@@ -1,4 +1,4 @@
-class Merchant::ItemsController < ApplicationController
+class Merchants::ItemsController < ApplicationController
 	def index
     @merchant = Merchant.find(params[:merchant_id])
     @enabled_items = @merchant.items.enabled_items
