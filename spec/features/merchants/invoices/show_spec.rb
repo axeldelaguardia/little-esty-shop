@@ -16,6 +16,8 @@ describe 'As a merchant', type: :feature do
   let!(:invoice2) {create(:invoice, created_at: Date.new(2019, 3, 9), customer: customer2) }
 
   let!(:discount_1) {create(:bulk_discount, merchant: merchant1) }
+  let!(:discount_2) {create(:other_bulk_discount, merchant: merchant1) }
+  let!(:discount_3) {create(:better_bulk_discount, merchant: merchant1) }
 
   before(:each) do
     @invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 1, unit_price: 5)

@@ -35,7 +35,7 @@
       </td>
 			<td>
 				<% if invoice_item.bulk_discount_applies? %>
-					<%= link_to 'Bulk Discount Applied', merchant_bulk_discount_path(@merchant, invoice_item.bulk_discounts.take) %>
+					<%= link_to 'Bulk Discount Applied', merchant_bulk_discount_path(@merchant, invoice_item.discount_applied) %>
 				<% end %>
 			</td>
 		</div>

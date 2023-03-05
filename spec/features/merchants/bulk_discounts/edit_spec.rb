@@ -12,13 +12,13 @@ RSpec.describe 'merchant bulk discount edit page', type: :feature do
 
 		describe 'edit bulk discount' do
 			it 'has a form to update fields with current values pre-filled' do
-				expect(page).to have_field('Percentage', with: '20.0')
+				expect(page).to have_field('Percentage', with: '0.2')
 				expect(page).to have_field('Quantity Threshold', with: '10')
 				expect(page).to have_button('Update Bulk discount')
 			end
 
 			it 'changing information and submitting updates the status in show page' do
-				fill_in 'Percentage', with: '30.0'
+				fill_in 'Percentage', with: '0.3'
 				fill_in 'Quantity Threshold', with: '15'
 				click_button 'Update Bulk discount'
 

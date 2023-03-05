@@ -13,7 +13,7 @@ RSpec.describe 'merchant bulk discount show page', type: :feature do
 		describe "bulk discount show page" do
 			it 'shows the bulk discounts threshold quantity and discount percentage' do
 				expect(page).to have_content("Bulk Discount ##{discount_1.id}")
-				expect(page).to have_content("Percentage: #{discount_1.percentage}%")
+				expect(page).to have_content("Percentage: #{discount_1.percentage*100}%")
 				expect(page).to have_content("Quantity Threshold: #{discount_1.quantity_threshold}")
 
 				expect(page).to_not have_content("Bulk Discount ##{discount_2.id}")
