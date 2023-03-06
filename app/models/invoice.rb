@@ -12,13 +12,36 @@ class Invoice < ApplicationRecord
   end
 
   def total_revenue
-    self.invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
+  	invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
-	def total_discounts
-		ii_with_discounts = invoice_items.joins(:bulk_discounts).where("invoice_items.quantity >= bulk_discounts.quantity_threshold").select("invoice_items.*,  MAX(bulk_discounts.percentage) as discount").group(:id)
+	def merchant_total_revenue(merchant)
+		invoice_items
+		.where(item_id: merchant.items.ids)
+		.sum("invoice_items.unit_price * invoice_items.quantity")
+	end
 
-		total_discount = InvoiceItem.select('COALESCE(SUM(ii_with_discounts.discount*ii_with_discounts.unit_price*ii_with_discounts.quantity), 0) as total').from(ii_with_discounts, :ii_with_discounts)
+	def total_discounts
+		ii_with_discounts = invoice_items.joins(:bulk_discounts)
+												.where("invoice_items.quantity >= bulk_discounts.quantity_threshold")
+												.select("invoice_items.*,  MAX(bulk_discounts.percentage) as discount")
+												.group(:id)
+
+		total_discount = InvoiceItem.select('COALESCE(SUM(ii_with_discounts.discount*ii_with_discounts.unit_price*ii_with_discounts.quantity), 0) as total')
+										.from(ii_with_discounts, :ii_with_discounts)
+
+		total_discount.take.total
+	end
+
+	def merchant_total_discounts(merchant)
+		ii_with_discounts = invoice_items.joins(:bulk_discounts)
+		.where("invoice_items.quantity >= bulk_discounts.quantity_threshold")
+		.where(item_id: merchant.items.ids)
+		.select("invoice_items.*,  MAX(bulk_discounts.percentage) as discount")
+		.group(:id)
+
+		total_discount = InvoiceItem.select('COALESCE(SUM(ii_with_discounts.discount*ii_with_discounts.unit_price*ii_with_discounts.quantity), 0) as total')
+		.from(ii_with_discounts, :ii_with_discounts)
 
 		total_discount.take.total
 	end

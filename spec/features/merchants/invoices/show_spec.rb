@@ -2,12 +2,14 @@ require 'rails_helper'
 
 describe 'As a merchant', type: :feature do
   let!(:merchant1) { create(:merchant)}
+  let!(:merchant2) { create(:merchant)}
 
   let!(:item1) {create(:item, merchant: merchant1) }  
   let!(:item2) {create(:item, merchant: merchant1) }
   let!(:item3) {create(:item, merchant: merchant1) }
   let!(:item4) {create(:item, merchant: merchant1) }
   let!(:item5) {create(:item, merchant: merchant1) }
+  let!(:item6) {create(:item, merchant: merchant2) } ####
 
   let!(:customer1) {create(:customer) }
   let!(:customer2) {create(:customer) }
@@ -18,6 +20,7 @@ describe 'As a merchant', type: :feature do
   let!(:discount_1) {create(:bulk_discount, merchant: merchant1) }
   let!(:discount_2) {create(:other_bulk_discount, merchant: merchant1) }
   let!(:discount_3) {create(:better_bulk_discount, merchant: merchant1) }
+  let!(:discount_3) {create(:bulk_discount, merchant: merchant2) }
 
   before(:each) do
     @invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 1, unit_price: 5)
@@ -25,6 +28,7 @@ describe 'As a merchant', type: :feature do
     @invoice_item3 = create(:invoice_item, invoice: invoice1, item: item3, quantity: 1, unit_price: 5)
     @invoice_item4 = create(:invoice_item, invoice: invoice1, item: item4, quantity: 10, unit_price: 5)
     @invoice_item5 = create(:invoice_item, invoice: invoice2, item: item5, quantity: 1, unit_price: 5)
+    @invoice_item6 = create(:invoice_item, invoice: invoice1, item: item6, quantity: 10, unit_price: 5) ####
   end
 
   describe "When I visit my merchant's invoice show page" do
@@ -97,7 +101,7 @@ describe 'As a merchant', type: :feature do
       end
     end
 
-    it 'shows the total revenue that will be generated from all items on the invoice' do
+    it 'shows the total revenue that will be generated from all of the merchant items on the invoice' do
       total_revenue = (@invoice_item1.unit_price * @invoice_item1.quantity) + (@invoice_item3.unit_price * @invoice_item3.quantity) + (@invoice_item4.unit_price * @invoice_item4.quantity) + (@invoice_item2.unit_price * @invoice_item2.quantity)
       visit "/merchants/#{merchant1.id}/invoices/#{invoice1.id}"
       

@@ -6,14 +6,8 @@ class Item < ApplicationRecord
 	has_many :bulk_discounts, through: :merchant
 	enum status: [ "enabled", "disabled" ]
 
-
-  def self.enabled_items
-    where(status: 0)
-  end
-
-  def self.disabled_items
-    where(status: 1)
-  end
+	scope :enabled_items, -> { where(status: 0) }
+	scope :disabled_items, -> { where(status: 1) }
 
 	def self.top_five_most_popular_items
 		joins(:transactions)

@@ -6,8 +6,8 @@
 <p>Status: <%= @invoice.status %></p>
 <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %></p>
 <div id="total_revenue">
-  <p>Total Revenue: <%=number_to_currency(@invoice.total_revenue.to_f/100, percision: 2) %></p>
-  <p>Total Revenue with Discounts: <%=number_to_currency(@invoice.total_revenue.to_f/100 - @invoice.total_discounts.to_f/100, percision: 2) %></p>
+  <p>Total Revenue: <%=number_to_currency(@invoice.merchant_total_revenue(@merchant).to_f/100, percision: 2) %></p>
+  <p>Total Revenue with Discounts: <%=number_to_currency(@invoice.merchant_total_revenue(@merchant).to_f/100 - @invoice.merchant_total_discounts(@merchant).to_f/100, percision: 2) %></p>
 </div>
 
 <div id="customers">
