@@ -1,3 +1,5 @@
+<%= link_to 'Back to Merchant Dashboard', merchant_dashboard_path(@merchant) %>
+
 <h1>Bulk Discounts</h1>
 
 <%= link_to 'Create Bulk Discount', new_merchant_bulk_discount_path(@merchant) %>
@@ -5,7 +7,7 @@
 <section id='upcoming_holidays'>
 	<h2>Upcoming Holidays</h2>
 	<% @upcoming_holidays.each do |holiday| %>
-		<p><%= holiday.name %> - <% holiday.date %></p>
+		<p><%= holiday.name %> - <%= holiday.date %></p>
 	<% end %>
 </section>
 

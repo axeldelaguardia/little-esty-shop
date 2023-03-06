@@ -1,3 +1,5 @@
+<%= link_to "Back to Admin Page", admin_index_path  %>
+
 <h1>Merchants List</h1>
 
 <div id="top_five_merchants_by_rev">
@@ -9,7 +11,7 @@
 	<% end %>
 </div>
 <br>
-<br>
+<%= link_to "Create New Merchant", new_admin_merchant_path %>
 <h2>All Merchants</h2>
 <div id="merchant-list">
 	<% @active_merchants.each do |merchant| %>
@@ -18,7 +20,7 @@
 			<p>Status: <%= merchant.status %></p>
 			<%= button_to 'Disable', admin_merchant_path(merchant), params: {status: 'disabled'}, method: :patch %>
 		</div>
-		</br></br>
+		</br>
 	<% end %>
 
 	<% @disabled_merchants.each do |merchant| %>
@@ -30,5 +32,3 @@
 		</br></br>
 	<% end %>
 </div>
-
-<%= link_to "Create New Merchant", new_admin_merchant_path %>

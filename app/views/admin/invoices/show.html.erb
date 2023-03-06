@@ -1,3 +1,5 @@
+<%= link_to 'Back to Invoices', admin_invoices_path %>
+
 <h1>Admin Dashboard</h1>
 <h3>Invoice #<%= @invoice.id %></h3>
 <%= form_with url: admin_invoice_path(@invoice), method: 'patch', local: true do |f| %>

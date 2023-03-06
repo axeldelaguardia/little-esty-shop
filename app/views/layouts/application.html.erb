@@ -12,7 +12,7 @@
 
   <body>
     <div class="top-container">
-      <h1 style="text-align:center; background-color:lavender;">Little Esty Shop</h1>
+      <h1 style="text-align:center; background-color:lavender;"><%= link_to 'Little Esty Shop', home_path %></h1>
       <% flash.each do |type, msg| %>
         <h3><b><%= msg %></b></h3>
       <% end %>
