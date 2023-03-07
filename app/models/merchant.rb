@@ -7,6 +7,9 @@ class Merchant < ApplicationRecord
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
 	has_many :bulk_discounts
+
+	scope :active_merchants, -> { where(status: 1) }
+	scope :disabled_merchants, -> { where(status: 0) }
 	
   def top_five_customers
     customers
@@ -26,14 +29,6 @@ class Merchant < ApplicationRecord
 		.where(customers: { id: customer_id })
 		.distinct.count
   end
-
-	def self.active_merchants
-		Merchant.where(status: 1)
-	end
-
-	def self.disabled_merchants
-		Merchant.where(status: 0)
-	end
 
   def self.top_five_merchant_by_rev
     joins(:transactions)
