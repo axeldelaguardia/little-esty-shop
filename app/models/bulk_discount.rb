@@ -9,9 +9,15 @@ class BulkDiscount < ApplicationRecord
 	before_destroy :pending_invoice
 	before_update :pending_invoice
 
+	def applied_invoices
+		invoices.joins(:bulk_discounts).where("invoice_items.quantity >= bulk_discounts.quantity_threshold")
+		.where("bulk_discounts.id = ?", self.id)
+		.distinct
+	end
+
 	private
 	def pending_invoice
-		if invoices.where(status: 1).empty?
+		if self.applied_invoices.where(status: 1).empty?
 			return
 		end
 		errors[:base] << 'There are pending invoices, cannot edit or delete'
