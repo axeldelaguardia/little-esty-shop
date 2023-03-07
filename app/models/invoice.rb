@@ -45,4 +45,8 @@ class Invoice < ApplicationRecord
 
 		total_discount.take.total
 	end
+
+	def merchant_revenue_after_discount(merchant)
+		merchant_total_revenue(merchant) - merchant_total_discounts(merchant)
+	end
 end

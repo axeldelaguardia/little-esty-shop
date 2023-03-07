@@ -196,6 +196,23 @@ RSpec.describe Invoice, type: :model do
 
 				expect(invoice_a.merchant_total_discounts(merchant_a)).to eq(34.5)
 			end
+
+			it '#merchant_revenue_after_discount' do
+				merchant_a = create(:merchant)
+				merchant_b = create(:merchant)
+				item_a1 = create(:item, merchant: merchant_a)
+				item_a2 = create(:item, merchant: merchant_a)
+				item_b = create(:item, merchant: merchant_b)
+				invoice_a = create(:completed_invoice)
+				invoice_item_a = create(:invoice_item, invoice: invoice_a, item: item_a1, quantity: 12, unit_price: 5)
+				invoice_item_b = create(:invoice_item, invoice: invoice_a, item: item_a2, quantity: 15, unit_price: 5)
+				invoice_item_c = create(:invoice_item, invoice: invoice_a, item: item_b, quantity: 15, unit_price: 5)
+				BulkDiscount.create(merchant: merchant_a, quantity_threshold: 10, percentage: 0.2)
+				BulkDiscount.create(merchant: merchant_a, quantity_threshold: 15, percentage: 0.3)
+				BulkDiscount.create(merchant: merchant_b, quantity_threshold: 15, percentage: 0.3)
+
+				expect(invoice_a.merchant_revenue_after_discount(merchant_a)).to eq(100.5)
+			end
     end
   end
 end
