@@ -7,9 +7,7 @@ class Invoice < ApplicationRecord
   
   enum status: ["cancelled", "in progress", "completed"]
 
-  def self.invoice_items_not_shipped
-    joins(:invoice_items).where.not(invoice_items: {status: 2}).distinct.order(:created_at)
-  end
+	scope :invoice_items_not_shipped, -> { joins(:invoice_items).where.not(invoice_items: {status: 2}).distinct.order(:created_at) }
 
   def total_revenue
   	invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
