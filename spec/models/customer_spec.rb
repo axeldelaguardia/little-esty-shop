@@ -78,5 +78,12 @@ RSpec.describe Customer, type: :model do
         expect(Customer.top_five_customers).to eq([customer1, customer3, customer5, customer4, customer6])
       end
     end
+
+		describe 'callbacks' do
+			it 'titleizes first and last name when validating' do
+				expect(Customer.create(first_name: 'ken', last_name: 'smith').first_name).to eq('Ken')
+				expect(Customer.create(first_name: 'ken', last_name: 'smith').last_name).to eq('Smith')
+			end
+		end
   end
 end
