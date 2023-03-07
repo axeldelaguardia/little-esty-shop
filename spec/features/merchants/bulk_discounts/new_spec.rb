@@ -17,7 +17,7 @@ RSpec.describe 'merchant bulk discount new page', type: :feature do
 			it 'creating a new discount' do
 				visit new_merchant_bulk_discount_path(merchant_1)
 				
-				fill_in 'Percentage', with: '50'
+				fill_in 'Percentage', with: '0.5'
 				fill_in 'Quantity Threshold', with: '100'
 				click_button
 
@@ -27,12 +27,12 @@ RSpec.describe 'merchant bulk discount new page', type: :feature do
 			it 'should have the new discount in the merchant bulk discounts index page' do
 				visit new_merchant_bulk_discount_path(merchant_1)
 				
-				fill_in 'Percentage', with: '50'
+				fill_in 'Percentage', with: '0.5'
 				fill_in 'Quantity Threshold', with: '100'
 				click_button
 
 				expect(page).to have_content("Bulk Discount ##{discount_2.id}")
-				expect(page).to have_content('Percentage: 50')
+				expect(page).to have_content('Percentage: 50.0%')
 				expect(page).to have_content('Quantity Threshold: 100')
 			end
 		end

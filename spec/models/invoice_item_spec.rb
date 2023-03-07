@@ -21,8 +21,8 @@ RSpec.describe InvoiceItem, type: :model do
   let!(:invoice1) {create(:invoice, created_at: Date.new(2020, 1, 2), customer: customer1) }
   let!(:invoice2) {create(:invoice, created_at: Date.new(2019, 3, 9), customer: customer2) }
 
-  let!(:discount_1) {create(:bulk_discount, merchant: merchant1, quantity_threshold: 15, percentage: 30.0) }
-  let!(:discount_2) {create(:bulk_discount, merchant: merchant1, quantity_threshold: 10, percentage: 20.0) }
+  let!(:discount_1) {create(:bulk_discount, merchant: merchant1, quantity_threshold: 15, percentage: 0.3) }
+  let!(:discount_2) {create(:bulk_discount, merchant: merchant1, quantity_threshold: 10, percentage: 0.2) }
 
   before(:each) do
     @invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 1)
