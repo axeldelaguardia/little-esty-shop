@@ -16,17 +16,17 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
 				within "#discounts" do
 					within "##{discount_1.id}" do
 						expect(page).to have_content("Bulk Discount ##{discount_1.id}")
-						expect(page).to have_content("Percentage: #{(discount_1.percentage)}%")
+						expect(page).to have_content("Percentage: #{discount_1.percentage*100}%")
 						expect(page).to have_content("Quantity Threshold: #{discount_1.quantity_threshold}")
 					end
 
 					within "##{discount_2.id}" do
 						expect(page).to have_content("Bulk Discount ##{discount_2.id}")
-						expect(page).to have_content("Percentage: #{(discount_2.percentage)}%")
+						expect(page).to have_content("Percentage: #{discount_2.percentage*100}%")
 						expect(page).to have_content("Quantity Threshold: #{discount_2.quantity_threshold}")
 					end
 
-					expect(page).to_not have_content(discount_3.percentage)
+					expect(page).to_not have_content(discount_3.percentage*100)
 					expect(page).to_not have_content(discount_3.quantity_threshold)
 				end
 			end

@@ -4,10 +4,12 @@ class Invoice < ApplicationRecord
   has_many :invoice_items
   has_many :items, through: :invoice_items
   has_many :merchants, through: :items
-  
+  has_many :bulk_discounts, through: :merchants
   enum status: ["cancelled", "in progress", "completed"]
 
-	scope :invoice_items_not_shipped, -> { joins(:invoice_items).where.not(invoice_items: {status: 2}).distinct.order(:created_at) }
+	scope :invoice_items_not_shipped, -> { joins(:invoice_items)
+																				 .where.not(invoice_items: {status: 2})
+																				 .distinct.order(:created_at) }
 
   def total_revenue
   	invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
@@ -42,5 +44,9 @@ class Invoice < ApplicationRecord
 		.from(ii_with_discounts, :ii_with_discounts)
 
 		total_discount.take.total
+	end
+
+	def merchant_revenue_after_discount(merchant)
+		merchant_total_revenue(merchant) - merchant_total_discounts(merchant)
 	end
 end
