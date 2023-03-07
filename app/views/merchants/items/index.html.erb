@@ -25,7 +25,7 @@
 		<h2>Top 5 Most Popular Items</h2>
 		<% @popular_items.each do |item| %>
 			<ol id="<%= item.id %>_popular_item">
-				<li><%= link_to item.name, merchant_item_path(@merchant, item) %> - <%= number_to_currency(((item.revenue).to_f/100.00)) %> in sales</li>
+				<li><%= link_to item.name, merchant_item_path(@merchant, item) %> - <%= number_to_currency(pennies_to_dollars(item.revenue)) %> in sales</li>
 				<p>Top day for <%= item.name %> was <%= item.best_day %></p> 
 			</ol>
 		<% end %>

@@ -28,7 +28,7 @@
 		<div id=<%=invoice_item.id%>>
 			<td><%=invoice_item.item.name%></td>
 			<td><%=invoice_item.quantity%></td>
-			<td><%=(number_to_currency(invoice_item.unit_price.to_f/100))%></td>
+			<td><%=(number_to_currency(pennies_to_dollars(invoice_item.unit_price)))%></td>
       <td>
         <%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}", method: :patch, local: true do |form|%>
 					<%= form.select :status, ['pending', 'packaged', 'shipped'], selected:invoice_item.status %>

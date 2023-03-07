@@ -2,7 +2,7 @@
 
 <h1>Bulk Discount #<%= @discount.id %></h1>
 
-<p>Percentage: <%= @discount.percentage * 100 %>%</p>
+<p>Percentage: <%= decimal_to_percent(@discount.percentage) %>%</p>
 <p>Quantity Threshold: <%= @discount.quantity_threshold %></p>
 
 <%= link_to "Edit Bulk Discount", edit_merchant_bulk_discount_path(@merchant, @discount) %>

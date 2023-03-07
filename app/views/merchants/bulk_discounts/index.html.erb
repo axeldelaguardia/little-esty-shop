@@ -17,7 +17,7 @@
 			<%= link_to "Bulk Discount ##{discount.id}",  merchant_bulk_discount_path(@merchant, discount)%> - 
 			<%= link_to 'Delete', merchant_bulk_discount_path(@merchant, discount), method: :delete %>
 			</br>
-			Percentage: <%= (discount.percentage*100) %>%</br>
+			Percentage: <%= decimal_to_percent(discount.percentage) %>%</br>
 			Quantity Threshold: <%= discount.quantity_threshold %></br>
 		</li>
 	<% end %>
