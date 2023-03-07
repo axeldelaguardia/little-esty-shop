@@ -37,7 +37,6 @@ class  Merchants::BulkDiscountsController < ApplicationController
 
 	def destroy
 		bulk_discount = BulkDiscount.find(params[:id])
-		# require 'pry'; binding.pry
 		bulk_discount.destroy
 		flash[:notice] = error_message(bulk_discount.errors)
 		redirect_to merchant_bulk_discounts_path(params[:merchant_id])
