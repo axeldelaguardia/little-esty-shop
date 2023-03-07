@@ -19,7 +19,7 @@ class  Merchants::BulkDiscountsController < ApplicationController
 	def create
 		merchant = Merchant.find(params[:merchant_id])
 		discount = merchant.bulk_discounts.create(bulk_discount_params)
-		flash[:notice] = error_message(d.errors)
+		flash[:notice] = error_message(discount.errors)
 		redirect_to merchant_bulk_discounts_path
 	end
 

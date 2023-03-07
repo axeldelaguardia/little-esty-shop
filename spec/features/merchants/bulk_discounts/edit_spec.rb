@@ -27,6 +27,21 @@ RSpec.describe 'merchant bulk discount edit page', type: :feature do
 				expect(page).to have_content("Percentage: 30.0%")
 				expect(page).to have_content("Quantity Threshold: 15")
 			end
+
+			describe 'callback on updating bulk discount' do
+				it 'does not allow disount to be updated if there is a pending invoice with bulk discount' do
+					item_a1 = create(:item, merchant: merchant_1)
+					invoice_a = create(:invoice)
+					invoice_item_a = create(:invoice_item, invoice: invoice_a, item: item_a1, quantity: 12, unit_price: 5)
+					
+					expect(page).to_not have_content("There are pending invoices, cannot edit or delete")
+
+					fill_in 'Percentage', with: '0.3'
+					click_button 'Update Bulk discount'
+
+					expect(page).to have_content("There are pending invoices, cannot edit or delete")
+				end
+			end
 		end
 	end
 end
