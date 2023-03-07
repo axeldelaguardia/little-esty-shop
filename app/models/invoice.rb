@@ -4,7 +4,7 @@ class Invoice < ApplicationRecord
   has_many :invoice_items
   has_many :items, through: :invoice_items
   has_many :merchants, through: :items
-  
+  has_many :bulk_discounts, through: :merchants
   enum status: ["cancelled", "in progress", "completed"]
 
 	scope :invoice_items_not_shipped, -> { joins(:invoice_items)
